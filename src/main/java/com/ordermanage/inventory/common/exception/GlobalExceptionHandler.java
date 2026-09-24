@@ -1,5 +1,7 @@
 package com.ordermanage.inventory.common.exception;
 
+import com.ordermanage.inventory.inventory.exception.DuplicateInventoryException;
+import com.ordermanage.inventory.inventory.exception.InventoryNotFoundException;
 import com.ordermanage.inventory.product.exception.DuplicateSkuException;
 import com.ordermanage.inventory.product.exception.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -36,5 +38,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> productNotFound(ProductNotFoundException exception){
         ApiErrorResponse error = new ApiErrorResponse(HttpStatus.NOT_FOUND.value(),exception.getMessage(), LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(InventoryNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> inventoryNotFound(InventoryNotFoundException exception){
+        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.NOT_FOUND.value(),exception.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(DuplicateInventoryException.class)
+    public ResponseEntity<ApiErrorResponse> duplicateSku(DuplicateInventoryException exception){
+        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.CONFLICT.value(),exception.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 }
